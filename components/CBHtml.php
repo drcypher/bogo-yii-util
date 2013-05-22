@@ -60,4 +60,38 @@ class CBHtml extends CHtml
 		}
 		return $range;
 	}
+
+	/**
+	 * English ordinal suffix of given number.
+	 * @param integer $numericValue
+	 * @return string
+	 *
+	 * @see http://www.if-not-true-then-false.com/2010/php-1st-2nd-3rd-4th-5th-6th-php-add-ordinal-number-suffix/
+	 */
+	static public function englishOrdinalSuffix($numericValue)
+	{
+		if (!in_array(($numericValue % 100), array(11, 12, 13))) {
+			switch ($numericValue % 10) {
+			// Handle 1st, 2nd, 3rd
+			case 1:
+				return 'st';
+			case 2:
+				return 'nd';
+			case 3:
+				return 'rd';
+			}
+		}
+		return 'th';
+	}
+
+	/**
+	 * Convenience function for english ordinal number formatting.
+	 * @param integer $numericValue
+	 * @param string $padding
+	 * @return string
+	 */
+	static public function englishOrdinalNumber($numericValue, $padding = '')
+	{
+		return $numericValue.$padding.self::englishOrdinalSuffix($numericValue);
+	}
 }
