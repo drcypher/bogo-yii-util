@@ -8,7 +8,26 @@
  */
 class CBHtml extends CHtml
 {
+	/**
+	 * Yes/no options.
+	 *
+	 * @var string[]
+	 */
 	static public $yesNo = array('1'=>'Yes', '0'=>'No');
+
+	/**
+	 * True/false options.
+	 *
+	 * @var string[]
+	 */
+	static public $trueFalse = array('1'=>'True', '0'=>'False');
+
+	/**
+	 * On/off options.
+	 *
+	 * @var string[]
+	 */
+	static public $onOff = array('1'=>'On', '0'=>'Off');
 
 	/**
 	 * Return percentage format of $a/$b
