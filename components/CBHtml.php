@@ -30,6 +30,13 @@ class CBHtml extends CHtml
 	static public $onOff = array('1'=>'On', '0'=>'Off');
 
 	/**
+	 * Live/draft options.
+	 *
+	 * @var string[]
+	 */
+	static public $liveDraft = array('1'=>'Live', '0'=>'Draft');
+
+	/**
 	 * Return percentage format of $a/$b
 	 *
 	 * @param int $nominator
