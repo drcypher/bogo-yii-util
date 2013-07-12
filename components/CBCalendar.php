@@ -1,6 +1,6 @@
 <?php
 /**
- * Datetime functions.
+ * Datetime/calendar functions.
  *
  * @since 1.0
  * @package Components
@@ -70,35 +70,50 @@ class CBCalendar
 	}
 
 	/**
-	 * Convert seconds to a human-readable representation.
+	 * Format a human-readable representation (sec-min-hr-d-wk) of elapsed time.
 	 *
-	 * @param integer $initTime Time in seconds.
-	 *
+	 * @param integer $elapsedTimeInSeconds Elapsed time in seconds.
 	 * @return string
 	 */
-	static public function secondsToTime($initTime)
+	static public function formatElapsedTime($elapsedTimeInSeconds)
 	{
-		if ($initTime < 1.0) {
-			return number_format($initTime, 1).' sec';
+		// Retrieve seconds
+		$formatSeconds = $elapsedTimeInSeconds % 60;
+		$elapsedTimeInMinutes = ($elapsedTimeInSeconds - $formatSeconds) / 60;
+		$format = sprintf('%02dsec', $formatSeconds);
+
+		if (empty($elapsedTimeInMinutes)) {
+			return $format;
 		}
 
-		$components = array();
+		// Retrieve minutes
+		$formatMinutes = $elapsedTimeInMinutes % 60;
+		$elapsedTimeInHours = ($elapsedTimeInMinutes - $formatMinutes) / 60;
+		$format = sprintf('%02dmin ', $formatMinutes).$format;
 
-		$hours = floor($initTime / 3600);
-		if ($hours > 0) {
-			$components[] = "$hours hr";
+		if (empty($elapsedTimeInHours)) {
+			return $format;
 		}
 
-		$minutes = floor(($initTime / 60) % 60);
-		if ($minutes > 0) {
-			$components[] = "$minutes min";
+		// Retrieve hours
+		$formatHours = $elapsedTimeInHours % 24;
+		$elapsedTimeInDays = ($elapsedTimeInHours - $formatHours) / 24;
+		$format = sprintf('%02dhr ', $formatHours).$format;
+
+		if (empty($elapsedTimeInDays)) {
+			return $format;
 		}
 
-		$seconds = $initTime % 60;
-		if ($seconds > 0) {
-			$components[] = "$seconds sec";
+		// Retrieve days
+		$formatDays = $elapsedTimeInDays % 7;
+		$elapsedTimeInWeeks = ($elapsedTimeInDays - $formatDays) / 7;
+		$format = sprintf('%dd ', $formatDays).$format;
+
+		if (empty($elapsedTimeInWeeks)) {
+			return $format;
 		}
 
-		return implode(' ', $components);
+		// Retrieve weeks
+		return sprintf('%dwk ', $elapsedTimeInWeeks).$format;
 	}
 }
