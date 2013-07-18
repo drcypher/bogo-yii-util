@@ -80,6 +80,7 @@ class CBProfileFileLogRoute extends CFileLogRoute
 	public function render($file, $data)
 	{
 //		print_r($data);
+		$logs = array();
 		if ($file == 'profile-callstack') {
 			foreach($data as $index=>$entry)
 			{
