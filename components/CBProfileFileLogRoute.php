@@ -41,6 +41,13 @@ class CBProfileFileLogRoute extends CFileLogRoute
 	private $_report='summary';
 
 	/**
+	 * Show only records that exceed minimum time (in seconds).
+	 *
+	 * @var float
+	 */
+	public $minSecondsThreshold = 0;
+
+	/**
 	 * Initializes the route.
 	 * This method is invoked after the route is created by the route manager.
 	 */
@@ -88,12 +95,17 @@ class CBProfileFileLogRoute extends CFileLogRoute
 		} else {
 			foreach($data as $index=>$entry)
 			{
-				$proc=CHtml::encode($entry[0]);
-				$min=sprintf('%0.5f',$entry[2]);
-				$max=sprintf('%0.5f',$entry[3]);
-				$total=sprintf('%0.2f', 1000.0 * $entry[4]);
-				$average=sprintf('%0.5f',$entry[4]/$entry[1]);
-				$logs[] = array($proc, 'profile', $total.' ms', $index);
+				list($token,$calls,$min,$max,$total) = $entry;
+
+				if ($total >= $this->minSecondsThreshold) {
+					$proc=CHtml::encode($entry[0]);
+					$min=sprintf('%0.5f',$entry[2]);
+					$max=sprintf('%0.5f',$entry[3]);
+					$total=sprintf('%0.2f', 1000.0 * $entry[4]);
+					$average=sprintf('%0.5f',$entry[4]/$entry[1]);
+
+					$logs[] = array($proc, 'profile', $total.' ms', $index);
+				}
 			}
 		}
 //		return @date('Y/m/d H:i:s',$time)." [$level] [$category] $message\n";
